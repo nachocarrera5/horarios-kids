@@ -7,15 +7,24 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>¿Cuándo podés jugar?</h1>
-  <form id="disponibilidadForm">
-    <label for="nombre">Tu nombre:</label>
-    <input type="text" id="nombre" required />
+  <div class="contenedor">
+    <h1>¿Cuándo podés jugar?</h1>
 
-    <div id="horariosContainer"></div>
+    <div class="leyenda">
+      <span><span class="color-box verde"></span> Podés jugar</span>
+      <span><span class="color-box amarillo"></span> En duda / no preferís</span>
+      <span><span class="color-box rojo"></span> No podés</span>
+    </div>
 
-    <button type="submit">Enviar disponibilidad</button>
-  </form>
+    <form id="disponibilidadForm">
+      <label for="nombre">Tu nombre:</label>
+      <input type="text" id="nombre" required />
+
+      <div id="horariosContainer"></div>
+
+      <button type="submit">Enviar disponibilidad</button>
+    </form>
+  </div>
 
   <script src="script.js"></script>
 </body>
