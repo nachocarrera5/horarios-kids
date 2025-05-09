@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resumen de Disponibilidad</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #fafafa;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .hora {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-left: 10px solid;
+    }
+
+    .verde { border-color: green; background-color: #e8fbe8; }
+    .amarillo { border-color: goldenrod; background-color: #fffbe0; }
+    .rojo { border-color: red; background-color: #fde0e0; }
+
+    .hora h2 {
+      margin: 0;
+    }
+
+    ul {
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Resumen de Disponibilidad</h1>
+  <div id="contenedorResumen"></div>
+
+  <script>
+    const contenedor = document.getElementById('contenedorResumen');
+
+    fetch('/ver')
+      .then(res => res.json())
+      .then(data => {
+        const horas = Array.from({ length: 12 }, (_, i) => `${12 + i}:00`);
+        const resumen = {};
+
+        // Inicializamos el resumen por hora y color
+        horas.forEach(hora => {
+          resumen[hora] = { verde: [], amarillo: [], rojo: [] };
+        });
+
+        // Rellenamos el resumen
+        data.forEach(jugador => {
+          const nombre = jugador.nombre;
+          for (let hora in jugador.disponibilidad) {
+            const estado = jugador.disponibilidad[hora]; // verde, amarillo, rojo
+            resumen[hora][estado].push(nombre);
+          }
+        });
+
+        // Mostrar visualmente
+        horas.forEach(hora => {
+          const bloque = document.createElement('div');
+          bloque.className = 'hora';
+
+          // Determinar color predominante
+          const counts = resumen[hora];
+          let color = 'rojo';
+          if (counts.verde.length > 0) color = 'verde';
+          else if (counts.amarillo.length > 0) color = 'amarillo';
+          bloque.classList.add(color);
+
+          bloque.innerHTML = `
+            <h2>${hora}</h2>
+            <p><strong>Verde:</strong> ${counts.verde.length} (${counts.verde.join(', ') || 'Ninguno'})</p>
+            <p><strong>Amarillo:</strong> ${counts.amarillo.length} (${counts.amarillo.join(', ') || 'Ninguno'})</p>
+            <p><strong>Rojo:</strong> ${counts.rojo.length} (${counts.rojo.join(', ') || 'Ninguno'})</p>
+          `;
+
+          contenedor.appendChild(bloque);
+        });
+      });
+  </script>
+</body>
+</html>
