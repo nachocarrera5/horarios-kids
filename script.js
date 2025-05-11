@@ -98,7 +98,7 @@ if (localStorage.getItem("yaVoto") === "true") {
       disponibilidad[`${horas[i]}:00`] = estado;
     }
 
-    fetch("/guardar", {
+    fetch("/https://script.google.com/macros/s/AKfycby15geaK6hOGwgRggrJVUd-3g0ixrxVTWDb5axA5UJQYmIRKVhznchB8qGAx0_PT9_ciw/exec", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ nombre, disponibilidad })
